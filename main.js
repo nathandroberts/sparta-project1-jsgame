@@ -11,9 +11,9 @@ var content = canvas.getContext('2d');
 //ball variables
 var ballRadius = 12;
 var xBall = 400;
-var yBall= 450;
+var yBall= 400;
 var xBallSpeed = 2;
-var yBallSpeed = 4;
+var yBallSpeed = -4;
 //paddle variables
 var xPaddle = 300;
 var yPaddle = 460;
@@ -59,9 +59,9 @@ function movePaddle() {
 
     xPaddle = xMouse - (paddleWidth/2)
     // 390 480 y limits
-    if (yMouse > 390 && yMouse < 470) {
-      yPaddle = yMouse - (paddleHeight/2)
-    }
+    // if (yMouse > 390 && yMouse < 470) {
+    //   yPaddle = yMouse - (paddleHeight/2)
+    // }
 
   })
   requestAnimationFrame(movePaddle)
@@ -80,9 +80,11 @@ function collisionDetectionPaddle() {
   var yPaddleBottom = yPaddle - paddleHeight;
   var xPaddleLeft =  xPaddle;
   var xPaddleRight = xPaddle + paddleWidth;
-  console.log('yPaddleTop '+ yPaddleTop + ' yPaddleBottom '+yPaddleBottom+ ' xPaddleLeft ' + xPaddleLeft + ' xPaddleRight ' + xPaddleRight);
-  console.log('x '+ xBall + ' y '+ yBall);
-  console.log('xpaddle ' +xPaddle+ ' ypaddle '+yPaddle);
+
+  var xBallDistanceFromPaddleCenter = xBall - (xPaddle + paddleWidth/2)
+  // console.log('yPaddleTop '+ yPaddleTop + ' yPaddleBottom '+yPaddleBottom+ ' xPaddleLeft ' + xPaddleLeft + ' xPaddleRight ' + xPaddleRight);
+  // console.log('x '+ xBall + ' y '+ yBall);
+  // console.log('xPaddle ' +xPaddle+ ' ypaddle '+yPaddle);
   //corners of paddle
   if (yBall < yPaddleTop &&
       yBall > yPaddleBottom &&
@@ -90,7 +92,9 @@ function collisionDetectionPaddle() {
       xBall < xPaddleRight) {
     yBallSpeed = -yBallSpeed;
     console.log('Bounce');
+    xBallSpeed = xBallDistanceFromPaddleCenter * 0.25;
   }
+
 }
 
 movePaddle()
