@@ -44,7 +44,19 @@ function makeBall() {
   yBallSpeed = -yBallSpeed;
   }
 }
+function movePaddle() {
+  canvas.addEventListener('mousemove', function (event) {
+    var xMouse = event.clientX;     // Get the horizontal coordinate
+    var yMouse = event.clientY;
+    console.log(yMouse);
+    xPaddle = xMouse
+    // 390 480 y limits
+    if (yMouse > 390 && yMouse < 470) {
 
-
+      yPaddle = yMouse
+    }
+  })
+}
+movePaddle()
 setInterval(makePaddle, 5)
 setInterval(makeBall,10)
