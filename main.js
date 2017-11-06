@@ -13,7 +13,7 @@ var ballRadius = 12;
 var xBall = 400;
 var yBall= 450;
 var xBallSpeed = 2;
-var yBallSpeed = -1;
+var yBallSpeed = -4;
 //paddle variables
 var xPaddle = 300;
 var yPaddle = 460;
@@ -56,23 +56,28 @@ function movePaddle() {
     var xMouse = event.clientX;     // Get the horizontal coordinate
     var yMouse = event.clientY;
 
-    xPaddle = xMouse
+    xPaddle = xMouse - (paddleWidth/2)
     // 390 480 y limits
     if (yMouse > 390 && yMouse < 470) {
-      yPaddle = yMouse
+      yPaddle = yMouse - (paddleHeight/2)
     }
     collisionDetectionPaddle(yPaddle, yBall)
   })
   requestAnimationFrame(movePaddle)
 }
-function collisionDetectionPaddle(yPaddleCoordinate, yBallCoordinate) {
-  for (var i = 0; i < (xPaddle + paddleWidth); i++) {
 
-    if (yPaddleCoordinate === yBallCoordinate && (xPaddle+ i) === xBall ){
-      yBallSpeed = -yBallSpeed
-      console.log('xPaddle' + ' '+ i);
-    }
-  }
+function collisionDetectionPaddle(yPaddleCoordinate, yBallCoordinate) {
+  // for (var i = 0; i < (xPaddle + paddleWidth); i++) {
+  //
+  //   if (yPaddleCoordinate === yBallCoordinate && (xPaddle+ i) === xBall ){
+  //     yBallSpeed = -yBallSpeed
+  //
+  //   }
+  // }
+  var yPaddleTop = yPaddle;
+  var yPaddleBottom = yPaddle - paddleHeight;
+  var xPaddleLeft =  xPaddle;
+  var xPaddleRight = xPaddle + paddleWidth;
 }
 
 movePaddle()
