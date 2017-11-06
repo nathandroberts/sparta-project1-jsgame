@@ -56,9 +56,9 @@ function multipleBlocks() {
     //columns of blocks
     for (var i = 0; i < numberOfBlockColumns; i++) {
       //calculates array number of each block in blocks[] based on i and j
-
+      var blockPositionIndexValue = blockPositionIndex(i, j)
       //move down into if
-      if (blocks[blockPositionIndex(j, i)] == true) {
+      if (blocks[blockPositionIndexValue]) {
         makeBlock(i, j);
 
       }
