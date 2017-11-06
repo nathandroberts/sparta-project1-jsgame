@@ -22,7 +22,6 @@ var paddleHeight = 20;
 
 function makePaddle() {
   content.clearRect((0), (0), (canvas.width), (canvas.height))
-  // content.clearRect((xPaddle - 5), (yPaddle- 5), (paddleWidth +10), (paddleHeight+ 10))
   content.beginPath();
   // xcoordinate y width height
   content.rect(xPaddle, yPaddle, paddleWidth, paddleHeight);
@@ -33,10 +32,8 @@ function makePaddle() {
 
 
 function makeBall() {
-  // starting position x , y, width of erase box, height
-  // content.clearRect((xBall - ballRadius - 3) , (yBall - ballRadius - 3) , (2.*ballRadius+ 10), (2.*ballRadius+ 10))
   content.beginPath();
-  //ball x coordinate, y coordinate,radius start angle of circle, endAngle
+  //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
   content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
   content.fillStyle = 'green';
   content.fill();
@@ -56,42 +53,30 @@ function movePaddle() {
   canvas.addEventListener('mousemove', function (event) {
     var xMouse = event.clientX;     // Get the horizontal coordinate
     var yMouse = event.clientY;
-
+    //centers paddle
     xPaddle = xMouse - (paddleWidth/2)
-    // 390 480 y limits
-    // if (yMouse > 390 && yMouse < 470) {
-    //   yPaddle = yMouse - (paddleHeight/2)
-    // }
 
   })
   requestAnimationFrame(movePaddle)
 }
 
 function collisionDetectionPaddle() {
-  // for (var i = 0; i < (xPaddle + paddleWidth); i++) {
-  //
-  //   if (yPaddleCoordinate === yBallCoordinate && (xPaddle+ i) === xBall ){
-  //     yBallSpeed = -yBallSpeed
-  //
-  //   }
-  // }
 
+  //corners of paddle
   var yPaddleTop = yPaddle;
   var yPaddleBottom = yPaddle - paddleHeight;
   var xPaddleLeft =  xPaddle;
   var xPaddleRight = xPaddle + paddleWidth;
 
   var xBallDistanceFromPaddleCenter = xBall - (xPaddle + paddleWidth/2)
-  // console.log('yPaddleTop '+ yPaddleTop + ' yPaddleBottom '+yPaddleBottom+ ' xPaddleLeft ' + xPaddleLeft + ' xPaddleRight ' + xPaddleRight);
-  // console.log('x '+ xBall + ' y '+ yBall);
-  // console.log('xPaddle ' +xPaddle+ ' ypaddle '+yPaddle);
-  //corners of paddle
+  //corners of paddle compared to ball coordinates
   if (yBall < yPaddleTop &&
       yBall > yPaddleBottom &&
       xBall > xPaddleLeft &&
       xBall < xPaddleRight) {
     yBallSpeed = -yBallSpeed;
     console.log('Bounce');
+    //aiming function slower speed at edges
     xBallSpeed = xBallDistanceFromPaddleCenter * 0.25;
   }
 
