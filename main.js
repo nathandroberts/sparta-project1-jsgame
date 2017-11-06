@@ -19,6 +19,15 @@ var xPaddle = 300;
 var yPaddle = 460;
 var paddleWidth = 200;
 var paddleHeight = 20;
+//block variables
+var numberOfBlockRows = 5;
+var numberOfBlockColumns = 9;
+var blockWidth = 90;
+var blockHeight = 30;
+var blockPadding = 3;
+// var blockSpaceFromTop = 30;
+// var brickSpaceFromLeft = 30;
+var blocks = [];
 
 function makePaddle() {
   content.clearRect((0), (0), (canvas.width), (canvas.height))
@@ -28,6 +37,36 @@ function makePaddle() {
   content.fillStyle = 'blue';
   content.fill();
   content.closePath();
+
+}
+
+function makeBlock(loopInputRow, loopInputColumn) {
+  content.beginPath();
+  // x coordinate, y coordinate, width, height
+  content.rect((blockWidth * loopInputRow), (blockHeight * loopInputColumn), (blockWidth -blockPadding), (blockHeight - blockPadding));
+  content.fillStyle = 'red';
+  content.fill();
+  content.closePath();
+}
+function removeBlock() {
+  for (var i = 0; i < numberOfBlockColumns; i++) {
+    blocks[i]= true;
+  }
+// blocks[2] = false;
+}
+
+function multipleBlocks() {
+  //rows of blocks
+  for (var j = 0; j <numberOfBlockRows; j++) {
+    //columns of blocks
+    for (var i = 0; i < numberOfBlockColumns; i++) {
+      if (blocks[i] == true) {
+
+        makeBlock(i, j);
+      }
+    }
+  }
+  requestAnimationFrame(multipleBlocks)
 }
 
 
@@ -81,7 +120,8 @@ function collisionDetectionPaddle() {
   }
 
 }
-
+removeBlock()
+multipleBlocks()
 movePaddle()
 setInterval(makePaddle, 10)
 // setInterval(makeBall,10)
