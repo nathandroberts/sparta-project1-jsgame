@@ -37,7 +37,6 @@ function makePaddle() {
   content.fillStyle = 'blue';
   content.fill();
   content.closePath();
-
 }
 
 function makeBlock(loopInputRow, loopInputColumn) {
@@ -48,27 +47,32 @@ function makeBlock(loopInputRow, loopInputColumn) {
   content.fill();
   content.closePath();
 }
-function removeBlock() {
-  for (var i = 0; i < numberOfBlockColumns; i++) {
-    blocks[i]= true;
-  }
-// blocks[2] = false;
+function blockPositionIndex(column, row) {
+  return column + numberOfBlockColumns * row;
 }
-
 function multipleBlocks() {
   //rows of blocks
   for (var j = 0; j <numberOfBlockRows; j++) {
     //columns of blocks
     for (var i = 0; i < numberOfBlockColumns; i++) {
-      if (blocks[i] == true) {
+      //calculates array number of each block in blocks[] based on i and j
 
+      //move down into if
+      if (blocks[blockPositionIndex(j, i)] == true) {
         makeBlock(i, j);
+
       }
     }
   }
+
   requestAnimationFrame(multipleBlocks)
 }
 
+function allBlocksVisible() {
+  for (var i = 0; i < numberOfBlockColumns*numberOfBlockRows; i++) {
+    blocks[i]= true;
+  }
+}
 
 function makeBall() {
   content.beginPath();
@@ -86,7 +90,7 @@ function makeBall() {
   yBallSpeed = -yBallSpeed;
   }
   requestAnimationFrame(makeBall);
-  collisionDetectionPaddle()
+  collisionDetectionBall()
 }
 function movePaddle() {
   canvas.addEventListener('mousemove', function (event) {
@@ -99,7 +103,7 @@ function movePaddle() {
   requestAnimationFrame(movePaddle)
 }
 
-function collisionDetectionPaddle() {
+function collisionDetectionBall() {
 
   //corners of paddle
   var yPaddleTop = yPaddle;
@@ -113,14 +117,22 @@ function collisionDetectionPaddle() {
       yBall > yPaddleBottom &&
       xBall > xPaddleLeft &&
       xBall < xPaddleRight) {
+    //bounce ball
     yBallSpeed = -yBallSpeed;
-    console.log('Bounce');
     //aiming function slower speed at edges
     xBallSpeed = xBallDistanceFromPaddleCenter * 0.25;
   }
-
+  //block bouncing code
+  //x position of ball relative to block width in column
+  var ballBlockColumn = Math.floor(xBall / blockWidth)
+  //y position of ball relative to block height
+  var ballBlockRow = Math.floor(yBall / blockHeight)
+  var blockIndexAtBallPosition = blockPositionIndex(ballBlockColumn, ballBlockRow)
+  if (blockIndexAtBallPosition >= 0 && blockIndexAtBallPosition < numberOfBlockRows * numberOfBlockColumns) {
+    blocks[blockIndexAtBallPosition] = false;
+  }
 }
-removeBlock()
+allBlocksVisible()
 multipleBlocks()
 movePaddle()
 setInterval(makePaddle, 10)
