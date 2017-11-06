@@ -21,7 +21,8 @@ var paddleWidth = 200;
 var paddleHeight = 20;
 
 function makePaddle() {
-  content.clearRect((xPaddle - 5), (yPaddle- 5), (paddleWidth +10), (paddleHeight+ 10))
+  content.clearRect((0), (0), (canvas.width), (canvas.height))
+  // content.clearRect((xPaddle - 5), (yPaddle- 5), (paddleWidth +10), (paddleHeight+ 10))
   content.beginPath();
   // xcoordinate y width height
   content.rect(xPaddle, yPaddle, paddleWidth, paddleHeight);
@@ -33,7 +34,7 @@ function makePaddle() {
 
 function makeBall() {
   // starting position x , y, width of erase box, height
-  content.clearRect((xBall - ballRadius - 3) , (yBall - ballRadius - 3) , (2.*ballRadius+ 10), (2.*ballRadius+ 10))
+  // content.clearRect((xBall - ballRadius - 3) , (yBall - ballRadius - 3) , (2.*ballRadius+ 10), (2.*ballRadius+ 10))
   content.beginPath();
   //ball x coordinate, y coordinate,radius start angle of circle, endAngle
   content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
@@ -75,7 +76,7 @@ function collisionDetectionPaddle(yPaddleCoordinate, yBallCoordinate) {
 }
 
 movePaddle()
-// setInterval(makePaddle, 10)
+setInterval(makePaddle, 10)
 // setInterval(makeBall,10)
 makePaddle()
 makeBall()
