@@ -13,7 +13,7 @@ var ballRadius = 12;
 var xBall = 400;
 var yBall= 450;
 var xBallSpeed = 2;
-var yBallSpeed = -4;
+var yBallSpeed = 4;
 //paddle variables
 var xPaddle = 300;
 var yPaddle = 460;
@@ -50,6 +50,7 @@ function makeBall() {
   yBallSpeed = -yBallSpeed;
   }
   requestAnimationFrame(makeBall);
+  collisionDetectionPaddle()
 }
 function movePaddle() {
   canvas.addEventListener('mousemove', function (event) {
@@ -61,12 +62,12 @@ function movePaddle() {
     if (yMouse > 390 && yMouse < 470) {
       yPaddle = yMouse - (paddleHeight/2)
     }
-    collisionDetectionPaddle(yPaddle, yBall)
+
   })
   requestAnimationFrame(movePaddle)
 }
 
-function collisionDetectionPaddle(yPaddleCoordinate, yBallCoordinate) {
+function collisionDetectionPaddle() {
   // for (var i = 0; i < (xPaddle + paddleWidth); i++) {
   //
   //   if (yPaddleCoordinate === yBallCoordinate && (xPaddle+ i) === xBall ){
@@ -74,10 +75,22 @@ function collisionDetectionPaddle(yPaddleCoordinate, yBallCoordinate) {
   //
   //   }
   // }
+
   var yPaddleTop = yPaddle;
   var yPaddleBottom = yPaddle - paddleHeight;
   var xPaddleLeft =  xPaddle;
   var xPaddleRight = xPaddle + paddleWidth;
+  console.log('yPaddleTop '+ yPaddleTop + ' yPaddleBottom '+yPaddleBottom+ ' xPaddleLeft ' + xPaddleLeft + ' xPaddleRight ' + xPaddleRight);
+  console.log('x '+ xBall + ' y '+ yBall);
+  console.log('xpaddle ' +xPaddle+ ' ypaddle '+yPaddle);
+  //corners of paddle
+  if (yBall < yPaddleTop &&
+      yBall > yPaddleBottom &&
+      xBall > xPaddleLeft &&
+      xBall < xPaddleRight) {
+    yBallSpeed = -yBallSpeed;
+    console.log('Bounce');
+  }
 }
 
 movePaddle()
@@ -85,5 +98,4 @@ setInterval(makePaddle, 10)
 // setInterval(makeBall,10)
 makePaddle()
 makeBall()
-
 });
