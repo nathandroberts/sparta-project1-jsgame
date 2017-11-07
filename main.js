@@ -11,9 +11,9 @@ var content = canvas.getContext('2d');
 //ball variables
 var ballRadius = 12;
 var xBall = 400;
-var yBall= 400;
-var xBallSpeed = 2;
-var yBallSpeed = -4;
+var yBall= 200;
+var xBallSpeed = 0;
+var yBallSpeed = 4;
 //paddle variables
 var xPaddle = 300;
 var yPaddle = 460;
@@ -25,10 +25,10 @@ var numberOfBlockColumns = 9;
 var blockWidth = 90;
 var blockHeight = 30;
 var blockPadding = 3;
-// var blockSpaceFromTop = 30;
-// var brickSpaceFromLeft = 30;
 var blocks = [];
-
+//win and loss conditions
+var blocksLeft = 0;
+var lives = 3;
 function makePaddle() {
   content.clearRect((0), (0), (canvas.width), (canvas.height))
   content.beginPath();
@@ -63,16 +63,30 @@ function multipleBlocks() {
       }
     }
   }
-
   requestAnimationFrame(multipleBlocks)
 }
 
 function allBlocksVisible() {
   for (var i = 0; i < numberOfBlockColumns*numberOfBlockRows; i++) {
     blocks[i]= true;
+    blocksLeft++;
   }
 }
 
+function gameCounter() {
+//if statement with blocksLeft
+}
+
+function movePaddle() {
+  canvas.addEventListener('mousemove', function (event) {
+    var xMouse = event.clientX;     // Get the horizontal coordinate
+    var yMouse = event.clientY;
+    //centers paddle
+    xPaddle = xMouse - (paddleWidth/2)
+
+  })
+  requestAnimationFrame(movePaddle)
+}
 function makeBall() {
   content.beginPath();
   //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
@@ -85,23 +99,15 @@ function makeBall() {
   if (xBall> canvas.width ||xBall <0) {
   xBallSpeed = -xBallSpeed;
   }
-  if (yBall > canvas.height || yBall <0) {
+  if (yBall <0) {
   yBallSpeed = -yBallSpeed;
+  }
+  if (yBall > canvas.height) {
+    ballOutOfPlay()
   }
   requestAnimationFrame(makeBall);
   collisionDetectionBall()
 }
-function movePaddle() {
-  canvas.addEventListener('mousemove', function (event) {
-    var xMouse = event.clientX;     // Get the horizontal coordinate
-    var yMouse = event.clientY;
-    //centers paddle
-    xPaddle = xMouse - (paddleWidth/2)
-
-  })
-  requestAnimationFrame(movePaddle)
-}
-
 function collisionDetectionBall() {
 
   //corners of paddle
@@ -133,10 +139,21 @@ function collisionDetectionBall() {
     if (blocks[blockIndexAtBallPosition]) {
       //remove block and bounce
       blocks[blockIndexAtBallPosition] = false;
+      blocksLeft--;
+      console.log(blocksLeft);
       yBallSpeed = -yBallSpeed;
     }
   }
 }
+function ballOutOfPlay() {
+  lives--;
+  xBall = 400;
+  yBall= 200;
+  xBallSpeed = 0;
+  yBallSpeed = 4;
+}
+
+
 allBlocksVisible()
 multipleBlocks()
 movePaddle()
