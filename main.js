@@ -21,7 +21,7 @@ var yPaddle = 460;
 var paddleWidth = 200;
 var paddleHeight = 20;
 //block variables
-var numberOfBlockRows = 5;
+var numberOfBlockRows = 4;
 var numberOfBlockColumns = 9;
 var blockWidth = 90;
 var blockHeight = 20;
@@ -46,7 +46,7 @@ function LaunchGameScreen(){
     if (newGame === 'yes') {
       startGame();
       newGame = 'no';
-      //timer      
+      //timer
       setInterval(incrementTimeValue, 1000)
 
     }
@@ -207,12 +207,12 @@ function livesLeftText() {
   content.fillText("Lives : "+ lives,canvas.width- 130,450);
 }
 function timePassed() {
-  if (lives>0) {
+  if (lives>0 && blocksLeft>0) {
     time = seconds;
   }
-  content.font = "50px Arial";
+  content.font = "30px Arial";
   content.fillStyle = "black";
-  content.fillText("Time: "+ time, 100, 350);
+  content.fillText("Time: "+ time, 10, 410);
 }
 function gameOverScreen(){
   if (lives === 0){
