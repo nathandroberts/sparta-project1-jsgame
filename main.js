@@ -29,6 +29,27 @@ var blocks = [];
 //win and loss conditions
 var blocksLeft = 0;
 var lives = 3;
+//start of the game
+LaunchGameScreen();
+
+function LaunchGameScreen(){
+  gameTitleText();
+  gameInfoText();
+  canvas.addEventListener('click', function (event) {
+    startGame();
+
+  })
+}
+function gameTitleText() {
+  content.font = "80px Arial";
+  content.fillStyle = "blue";
+  content.fillText("Brick Breaker",150,170);
+}
+function gameInfoText() {
+  content.font = "40px Arial";
+  content.fillStyle = "green";
+  content.fillText("A game by Nathan Roberts",145,240);
+}
 function makePaddle() {
   content.clearRect((0), (0), (canvas.width), (canvas.height))
   content.beginPath();
@@ -152,13 +173,30 @@ function ballOutOfPlay() {
   xBallSpeed = 0;
   yBallSpeed = 4;
 }
-
-
-allBlocksVisible()
-multipleBlocks()
-movePaddle()
-setInterval(makePaddle, 10)
-// setInterval(makeBall,10)
-makePaddle()
-makeBall()
+function gameHud() {
+  blocksLeftText();
+  livesLeftText();
+  requestAnimationFrame(gameHud);
+}
+function blocksLeftText() {
+  content.font = "30px Arial";
+  content.fillStyle = "red";
+  content.fillText("Blocks left : "+ blocksLeft,10,450);
+}
+function livesLeftText() {
+  content.font = "30px Arial";
+  content.fillStyle = "green";
+  content.fillText("Lives : "+ lives,canvas.width- 130,450);
+}
+//game functions
+function startGame() {
+  gameHud();
+  allBlocksVisible();
+  multipleBlocks();
+  movePaddle();
+  setInterval(makePaddle, 10);
+  // setInterval(makeBall,10)
+  makePaddle();
+  makeBall();
+}
 });
