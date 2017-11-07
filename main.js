@@ -37,8 +37,10 @@ function LaunchGameScreen(){
   gameInfoText();
   canvas.addEventListener('click', function (event) {
     startGame();
-
   })
+}
+function GameOverScreen(){
+
 }
 function gameTitleText() {
   content.font = "80px Arial";
@@ -48,7 +50,7 @@ function gameTitleText() {
 function gameInfoText() {
   content.font = "40px Arial";
   content.fillStyle = "green";
-  content.fillText("A game by Nathan Roberts",145,240);
+  content.fillText("Click to Start",280,240);
 }
 function makePaddle() {
   content.clearRect((0), (0), (canvas.width), (canvas.height))
@@ -161,7 +163,6 @@ function collisionDetectionBall() {
       //remove block and bounce
       blocks[blockIndexAtBallPosition] = false;
       blocksLeft--;
-      console.log(blocksLeft);
       yBallSpeed = -yBallSpeed;
     }
   }
@@ -190,13 +191,17 @@ function livesLeftText() {
 }
 //game functions
 function startGame() {
-  gameHud();
-  allBlocksVisible();
-  multipleBlocks();
-  movePaddle();
-  setInterval(makePaddle, 10);
-  // setInterval(makeBall,10)
-  makePaddle();
-  makeBall();
+   if  (lives > 0){
+    gameHud();
+    allBlocksVisible();
+    multipleBlocks();
+    movePaddle();
+    setInterval(makePaddle, 10);
+    // setInterval(makeBall,10)
+    makePaddle();
+    makeBall();
+  } else {
+    console.log('no lives');
+  }
 }
 });
