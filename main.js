@@ -8,6 +8,7 @@ var canvas = document.querySelector('canvas')
 console.log(canvas);
 //canvas width 800 height 500
 var content = canvas.getContext('2d');
+//for validation
 var newGame = 'yes';
 //ball variables
 var ballRadius = 12;
@@ -16,6 +17,7 @@ var yBall= 200;
 var xBallSpeed = 0;
 var yBallSpeed = 4;
 //paddle variables
+var difficulty = 0.25;
 var xPaddle = 300;
 var yPaddle = 460;
 var paddleWidth = 200;
@@ -99,18 +101,13 @@ function multipleBlocks() {
   }
   requestAnimationFrame(multipleBlocks)
 }
-
+//used to make blocks appear
 function allBlocksVisible() {
   for (var i = 0; i < numberOfBlockColumns*numberOfBlockRows; i++) {
     blocks[i]= true;
     blocksLeft++;
   }
 }
-
-function gameCounter() {
-//if statement with blocksLeft
-}
-
 function movePaddle() {
   canvas.addEventListener('mousemove', function (event) {
     var xMouse = event.clientX;     // Get the horizontal coordinate
@@ -148,7 +145,6 @@ function makeBall() {
   collisionDetectionBall()
 }
 function collisionDetectionBall() {
-
   //corners of paddle
   var yPaddleTop = yPaddle;
   var yPaddleBottom = yPaddle - paddleHeight;
@@ -156,15 +152,15 @@ function collisionDetectionBall() {
   var xPaddleRight = xPaddle + paddleWidth;
 
   var xBallDistanceFromPaddleCenter = xBall - (xPaddle + paddleWidth/2)
-  //corners of paddle compared to ball coordinates
+  //corners of paddle compared to ball coordinates to bounce ball off of paddle
   if (yBall < yPaddleTop &&
       yBall > yPaddleBottom &&
       xBall > xPaddleLeft &&
       xBall < xPaddleRight) {
     //bounce ball
     yBallSpeed = -yBallSpeed;
-    //aiming function slower speed at edges
-    xBallSpeed = xBallDistanceFromPaddleCenter * 0.25;
+    //aiming function greater x velocity at edges
+    xBallSpeed = xBallDistanceFromPaddleCenter * difficulty;
   }
   //block bouncing code
   //x position of ball relative to block width in column
@@ -175,7 +171,7 @@ function collisionDetectionBall() {
   //if statement to remove blocks
   if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
     //check if block exists before bounce happens
-    if (blocks[blockIndexAtBallPosition]) {
+    if (blocks[blockIndexAtBallPosition] === true) {
       //remove block and bounce
       blocks[blockIndexAtBallPosition] = false;
       blocksLeft--;
@@ -214,6 +210,7 @@ function timePassed() {
   content.fillStyle = "black";
   content.fillText("Time: "+ time, 10, 410);
 }
+//functions that are activated if game is lost
 function gameOverScreen(){
   if (lives === 0){
     gameOverText();
@@ -237,6 +234,7 @@ function gameOverReset() {
     window.location.reload();
   })
 }
+//functions that are activated if the game is won
 function gameWon() {
   if (blocksLeft === 0){
   gameWonText();
