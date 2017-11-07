@@ -38,14 +38,10 @@ function LaunchGameScreen(){
   gameInfoText();
   canvas.addEventListener('click', function (event) {
     if (newGame === 'yes') {
-      newGameVariables();
       startGame();
       newGame = 'no';
     }
   })
-}
-function newGameVariables() {
-  lives = 3;
 }
 
 function gameTitleText() {
@@ -205,7 +201,7 @@ function gameOverScreen(){
   if (lives === 0){
     gameOverText();
     gameOverPromptText();
-    gameOverVariableChanges();
+    gameOverReset();
   }
   requestAnimationFrame(gameOverScreen)
 }
@@ -219,8 +215,10 @@ function gameOverPromptText() {
   content.fillStyle = "black";
   content.fillText("Click to start a new game", 100, 350);
 }
-function gameOverVariableChanges(){
-  newGame = 'yes';
+function gameOverReset() {
+  canvas.addEventListener('click', function (event) {
+    window.location.reload();
+  })
 }
 //game functions
 
