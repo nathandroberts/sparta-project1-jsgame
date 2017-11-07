@@ -20,7 +20,7 @@ var yPaddle = 460;
 var paddleWidth = 200;
 var paddleHeight = 20;
 //block variables
-var numberOfBlockRows = 5;
+var numberOfBlockRows = 4;
 var numberOfBlockColumns = 9;
 var blockWidth = 90;
 var blockHeight = 30;
@@ -57,8 +57,7 @@ function multipleBlocks() {
     for (var i = 0; i < numberOfBlockColumns; i++) {
       //calculates array number of each block in blocks[] based on i and j
       var blockPositionIndexValue = blockPositionIndex(i, j)
-      //move down into if
-      if (blocks[blockPositionIndexValue]) {
+      if (blocks[blockPositionIndexValue] === true) {
         makeBlock(i, j);
 
       }
@@ -128,8 +127,14 @@ function collisionDetectionBall() {
   //y position of ball relative to block height
   var ballBlockRow = Math.floor(yBall / blockHeight)
   var blockIndexAtBallPosition = blockPositionIndex(ballBlockColumn, ballBlockRow)
-  if (blockIndexAtBallPosition >= 0 && blockIndexAtBallPosition < numberOfBlockRows * numberOfBlockColumns) {
-    blocks[blockIndexAtBallPosition] = false;
+  //if statement to remove blocks
+  if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
+    //check if block exists before bounce happens
+    if (blocks[blockIndexAtBallPosition]) {
+      //remove block and bounce
+      blocks[blockIndexAtBallPosition] = false;
+      yBallSpeed = -yBallSpeed;
+    }
   }
 }
 allBlocksVisible()
