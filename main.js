@@ -8,6 +8,7 @@ var canvas = document.querySelector('canvas')
 console.log(canvas);
 //canvas width 800 height 500
 var content = canvas.getContext('2d');
+var newGame = 'yes';
 //ball variables
 var ballRadius = 12;
 var xBall = 400;
@@ -36,16 +37,21 @@ function LaunchGameScreen(){
   gameTitleText();
   gameInfoText();
   canvas.addEventListener('click', function (event) {
-    startGame();
+    if (newGame === 'yes') {
+      newGameVariables();
+      startGame();
+      newGame = 'no';
+    }
   })
 }
-function GameOverScreen(){
-
+function newGameVariables() {
+  lives = 3;
 }
+
 function gameTitleText() {
   content.font = "80px Arial";
   content.fillStyle = "blue";
-  content.fillText("Brick Breaker",150,170);
+  content.fillText("Block Breaker",150,170);
 }
 function gameInfoText() {
   content.font = "40px Arial";
@@ -111,22 +117,28 @@ function movePaddle() {
   requestAnimationFrame(movePaddle)
 }
 function makeBall() {
-  content.beginPath();
-  //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
-  content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
-  content.fillStyle = 'green';
-  content.fill();
-  content.closePath()
-  xBall += xBallSpeed;
-  yBall += yBallSpeed
-  if (xBall> canvas.width ||xBall <0) {
-  xBallSpeed = -xBallSpeed;
-  }
-  if (yBall <0) {
-  yBallSpeed = -yBallSpeed;
-  }
-  if (yBall > canvas.height) {
-    ballOutOfPlay()
+  if (lives>0){
+
+    content.beginPath();
+    //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
+    content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
+    content.fillStyle = 'green';
+    content.fill();
+    content.closePath()
+    //making the ball move
+    xBall += xBallSpeed;
+    yBall += yBallSpeed
+    //making the ball rebound at edges
+    //and preventing its velocity from trapping it when it bounces off of paddle and wall at same time
+    if ((xBall> canvas.width && xBallSpeed > 0) || (xBall < 0 && xBallSpeed < 0)) {
+    xBallSpeed = -xBallSpeed;
+    }
+    if (yBall <0) {
+    yBallSpeed = -yBallSpeed;
+    }
+    if (yBall > canvas.height) {
+      ballOutOfPlay()
+    }
   }
   requestAnimationFrame(makeBall);
   collisionDetectionBall()
@@ -189,19 +201,38 @@ function livesLeftText() {
   content.fillStyle = "green";
   content.fillText("Lives : "+ lives,canvas.width- 130,450);
 }
+function gameOverScreen(){
+  if (lives === 0){
+    gameOverText();
+    gameOverPromptText();
+    gameOverVariableChanges();
+  }
+  requestAnimationFrame(gameOverScreen)
+}
+function gameOverText(){
+  content.font = "100px Arial";
+  content.fillStyle = "red";
+  content.fillText("GAME OVER", 80, 250);
+}
+function gameOverPromptText() {
+  content.font = "50px Arial";
+  content.fillStyle = "black";
+  content.fillText("Click to start a new game", 100, 350);
+}
+function gameOverVariableChanges(){
+  newGame = 'yes';
+}
 //game functions
+
 function startGame() {
-   if  (lives > 0){
+
     gameHud();
     allBlocksVisible();
     multipleBlocks();
     movePaddle();
     setInterval(makePaddle, 10);
-    // setInterval(makeBall,10)
     makePaddle();
     makeBall();
-  } else {
-    console.log('no lives');
-  }
+    gameOverScreen();
 }
 });
