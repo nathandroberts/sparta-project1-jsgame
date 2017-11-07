@@ -21,10 +21,10 @@ var yPaddle = 460;
 var paddleWidth = 200;
 var paddleHeight = 20;
 //block variables
-var numberOfBlockRows = 4;
+var numberOfBlockRows = 5;
 var numberOfBlockColumns = 9;
 var blockWidth = 90;
-var blockHeight = 30;
+var blockHeight = 20;
 var blockPadding = 3;
 var blocks = [];
 //win and loss conditions
@@ -113,7 +113,7 @@ function movePaddle() {
   requestAnimationFrame(movePaddle)
 }
 function makeBall() {
-  if (lives>0){
+  if (lives > 0 && blocksLeft > 0){
 
     content.beginPath();
     //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
@@ -200,7 +200,7 @@ function livesLeftText() {
 function gameOverScreen(){
   if (lives === 0){
     gameOverText();
-    gameOverPromptText();
+    gameDonePromptText();
     gameOverReset();
   }
   requestAnimationFrame(gameOverScreen)
@@ -210,7 +210,7 @@ function gameOverText(){
   content.fillStyle = "red";
   content.fillText("GAME OVER", 80, 250);
 }
-function gameOverPromptText() {
+function gameDonePromptText() {
   content.font = "50px Arial";
   content.fillStyle = "black";
   content.fillText("Click to start a new game", 100, 350);
@@ -219,6 +219,19 @@ function gameOverReset() {
   canvas.addEventListener('click', function (event) {
     window.location.reload();
   })
+}
+function gameWon() {
+  if (blocksLeft === 0){
+  gameWonText();
+  gameDonePromptText();
+  gameOverReset();
+  }
+  requestAnimationFrame(gameWon);
+}
+function gameWonText() {
+  content.font = "100px Arial";
+  content.fillStyle = "red";
+  content.fillText("GAME WON", 80, 250);
 }
 //game functions
 
@@ -232,5 +245,6 @@ function startGame() {
     makePaddle();
     makeBall();
     gameOverScreen();
+    gameWon();
 }
 });
