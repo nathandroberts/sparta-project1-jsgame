@@ -30,8 +30,14 @@ var blocks = [];
 //win and loss conditions
 var blocksLeft = 0;
 var lives = 3;
+var seconds = 0;
+var time;
 //start of the game
 LaunchGameScreen();
+
+function incrementTimeValue() {
+  seconds++;
+}
 
 function LaunchGameScreen(){
   gameTitleText();
@@ -40,6 +46,9 @@ function LaunchGameScreen(){
     if (newGame === 'yes') {
       startGame();
       newGame = 'no';
+      //timer      
+      setInterval(incrementTimeValue, 1000)
+
     }
   })
 }
@@ -114,7 +123,6 @@ function movePaddle() {
 }
 function makeBall() {
   if (lives > 0 && blocksLeft > 0){
-
     content.beginPath();
     //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
     content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
@@ -185,6 +193,7 @@ function ballOutOfPlay() {
 function gameHud() {
   blocksLeftText();
   livesLeftText();
+  timePassed();
   requestAnimationFrame(gameHud);
 }
 function blocksLeftText() {
@@ -196,6 +205,14 @@ function livesLeftText() {
   content.font = "30px Arial";
   content.fillStyle = "green";
   content.fillText("Lives : "+ lives,canvas.width- 130,450);
+}
+function timePassed() {
+  if (lives>0) {
+    time = seconds;
+  }
+  content.font = "50px Arial";
+  content.fillStyle = "black";
+  content.fillText("Time: "+ time, 100, 350);
 }
 function gameOverScreen(){
   if (lives === 0){
@@ -236,7 +253,6 @@ function gameWonText() {
 //game functions
 
 function startGame() {
-
     gameHud();
     allBlocksVisible();
     multipleBlocks();
