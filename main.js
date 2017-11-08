@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var ball3inPlay = false;
   var ball3Animation= 'off'
   //paddle variables
-  var difficulty = 0.25;
+  var difficulty = 0.2;
   var xPaddle = 300;
   var yPaddle = 460;
   var paddleWidth = 200;
@@ -52,15 +52,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //sound effects
   var startScreenTheme;
   var mainTheme;
-  //block blocktypes related variables
-  var basicBlock = 'blue';
-  var decreaseWidthBlock = 'red';
-  var increaseWidthBlock = 'green';
-  var speedUpBlock = 'black';
-  var speedDownBlock = 'gold'
+  //blocktypes and related variables
+  var ballBlock = 'red';
+  var decreaseWidthBlock = 'DeepSkyBlue';
+  var increaseWidthBlock = 'blue';
+  var speedUpBlock = 'gold';
+  var speedDownBlock = 'GoldenRod'
+  var basicBlock = 'lightgray'
+  var doubleBlock = 'gray'
+  var tripleBlock = 'black'
   var paddleWidthChange = 20;
   var yBallSpeedChangeMultiplier = 1.5;
-
+  var blockTimesHit = 1
   //start of the game
   LaunchGameScreen();
 
@@ -133,14 +136,13 @@ function audioStartScreenTheme() {
     for (var j = 0; j <numberOfBlockRows; j++) {
       //columns of blocks
       for (var i = 0; i < numberOfBlockColumns; i++) {
-        // blockType = randomNumberGenerator()
-        blockType = 1
+        blockType = randomNumberGenerator()
         if (blockType === 1) {
           //calculates array number of each block in blocks[] based on i and j
           var blockPositionIndexValue = blockPositionIndex(i, j)
           if (blocks[blockPositionIndexValue][0] === true) {
             if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
-              blocks[blockPositionIndexValue][1] = basicBlock;
+              blocks[blockPositionIndexValue][1] = ballBlock;
             }
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
           }
@@ -171,12 +173,39 @@ function audioStartScreenTheme() {
             }
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
           }
-        }else if (blockType === 5) {
+        } else if (blockType === 5) {
           //calculates array number of each block in blocks[] based on i and j
           var blockPositionIndexValue = blockPositionIndex(i, j)
           if (blocks[blockPositionIndexValue][0] === true) {
             if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
               blocks[blockPositionIndexValue][1] = speedDownBlock;
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
+          }
+        } else if (blockType === 6) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = basicBlock;
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
+          }
+        }  else if (blockType === 7) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = doubleBlock;
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
+          }
+        } else if (blockType === 8) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = tripleBlock;
             }
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
           }
@@ -193,7 +222,7 @@ function audioStartScreenTheme() {
     }
   }
   function randomNumberGenerator() {
-    return Math.floor(Math.random()* 5 + 1)
+    return Math.floor(Math.random()* 8 + 1)
   }
   function movePaddle() {
     canvas.addEventListener('mousemove', function (event) {
@@ -232,12 +261,12 @@ function audioStartScreenTheme() {
     collisionDetectionBall()
   }
   function makeBall2() {
-    if (ball2Animation === 'on'){
+    if (ball2Animation === 'on' && lives > 0 && blocksLeft > 0){
       ball2inPlay = true
       content.beginPath();
       //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
       content.arc(xBall2, yBall2, ballRadius, 0, Math.PI * 2);
-      content.fillStyle = 'blue';
+      content.fillStyle = 'magenta';
       content.fill();
       content.closePath()
       //making the ball move
@@ -260,12 +289,12 @@ function audioStartScreenTheme() {
     collisionDetectionBall2()
   }
   function makeBall3() {
-    if (ball3Animation === 'on'){
+    if (ball3Animation === 'on' && lives > 0 && blocksLeft > 0){
       ball3inPlay = true
       content.beginPath();
       //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
       content.arc(xBall3, yBall3, ballRadius, 0, Math.PI * 2);
-      content.fillStyle = 'blue';
+      content.fillStyle = 'red';
       content.fill();
       content.closePath()
       //making the ball move
@@ -354,7 +383,7 @@ function audioStartScreenTheme() {
     //if statement to remove blocks
     if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
       //check if block exists before bounce happens
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'blue') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === ballBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
@@ -376,26 +405,42 @@ function audioStartScreenTheme() {
         makeBall3()
        }
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'black') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === basicBlock) {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
+        //change blocktype
+        blocks[blockIndexAtBallPosition][1] = basicBlock;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
+        //change blocktype
+        blocks[blockIndexAtBallPosition][1] = doubleBlock;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed * yBallSpeedChangeMultiplier;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'gold') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed / yBallSpeedChangeMultiplier;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'green') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         paddleWidth = paddleWidth +paddleWidthChange;
         blocksLeft--;
         yBallSpeed = -yBallSpeed;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'red') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === decreaseWidthBlock) {
         //remove block and bounce
         paddleWidth = paddleWidth -paddleWidthChange;
         blocks[blockIndexAtBallPosition][0] = false;
@@ -415,7 +460,7 @@ function audioStartScreenTheme() {
     //if statement to remove blocks
     if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
       //check if block exists before bounce happens
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'blue') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === ballBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
@@ -429,26 +474,42 @@ function audioStartScreenTheme() {
          makeBall3()
         }
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'black') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === basicBlock) {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
+        //change blocktype
+        blocks[blockIndexAtBallPosition][1] = basicBlock;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
+        //change blocktype
+        blocks[blockIndexAtBallPosition][1] = doubleBlock;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2 * yBallSpeedChangeMultiplier;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'gold') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2 / yBallSpeedChangeMultiplier;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'green') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         paddleWidth = paddleWidth +paddleWidthChange;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'red') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === decreaseWidthBlock) {
         //remove block and bounce
         paddleWidth = paddleWidth -paddleWidthChange;
         blocks[blockIndexAtBallPosition][0] = false;
@@ -468,7 +529,7 @@ function audioStartScreenTheme() {
     //if statement to remove blocks
     if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
       //check if block exists before bounce happens
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'blue') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === ballBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
@@ -482,26 +543,42 @@ function audioStartScreenTheme() {
          makeBall2()
         }
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'black') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === basicBlock) {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
+        //change blocktype
+        blocks[blockIndexAtBallPosition][1] = basicBlock;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
+        //change blocktype
+        blocks[blockIndexAtBallPosition][1] = doubleBlock;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3 * yBallSpeedChangeMultiplier;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'gold') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3 / yBallSpeedChangeMultiplier;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'green') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         paddleWidth = paddleWidth +paddleWidthChange;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3;
       }
-      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'red') {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === decreaseWidthBlock) {
         //remove block and bounce
         paddleWidth = paddleWidth -paddleWidthChange;
         blocks[blockIndexAtBallPosition][0] = false;
