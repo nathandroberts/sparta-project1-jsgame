@@ -39,7 +39,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var mainTheme;
   //block blocktypes
   var basicBlock = 'blue';
-  var secondBlock = 'red';
+  var decreaseWidthBlock = 'red';
+  var increaseWidthBlock = 'green';
+  var speedUpBlock = 'black';
+  var speedDownBlock = 'gold'
+  var paddleWidthChange = 20;
+  var yBallSpeedChangeMultiplier = 1.5;
 
   //start of the game
   LaunchGameScreen();
@@ -119,20 +124,45 @@ function audioStartScreenTheme() {
           var blockPositionIndexValue = blockPositionIndex(i, j)
           if (blocks[blockPositionIndexValue][0] === true) {
             if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
-              blocks[blockPositionIndexValue][1] = basicBlock
+              blocks[blockPositionIndexValue][1] = basicBlock;
             }
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
-
           }
         } else if (blockType === 2) {
           //calculates array number of each block in blocks[] based on i and j
           var blockPositionIndexValue = blockPositionIndex(i, j)
           if (blocks[blockPositionIndexValue][0] === true) {
             if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
-              blocks[blockPositionIndexValue][1] = secondBlock
+              blocks[blockPositionIndexValue][1] = decreaseWidthBlock;
             }
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
-
+          }
+        } else if (blockType === 3) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = increaseWidthBlock;
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
+          }
+        } else if (blockType === 4) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = speedUpBlock;
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
+          }
+        }else if (blockType === 5) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = speedDownBlock;
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
           }
         }
       }
@@ -147,7 +177,7 @@ function audioStartScreenTheme() {
     }
   }
   function randomNumberGenerator() {
-    return Math.floor(Math.random()* 2 + 1)
+    return Math.floor(Math.random()* 5 + 1)
   }
   function movePaddle() {
     canvas.addEventListener('mousemove', function (event) {
@@ -185,6 +215,32 @@ function audioStartScreenTheme() {
     requestAnimationFrame(makeBall);
     collisionDetectionBall()
   }
+  function makeBall2() {
+    if (lives > 0 && blocksLeft > 0){
+      content.beginPath();
+      //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
+      content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
+      content.fillStyle = 'green';
+      content.fill();
+      content.closePath()
+      //making the ball move
+      xBall += xBallSpeed;
+      yBall += yBallSpeed
+      //making the ball rebound at edges
+      //and preventing its velocity from trapping it when it bounces off of paddle and wall at same time
+      if ((xBall> canvas.width && xBallSpeed > 0) || (xBall < 0 && xBallSpeed < 0)) {
+      xBallSpeed = -xBallSpeed;
+      }
+      if (yBall <0) {
+      yBallSpeed = -yBallSpeed;
+      }
+      if (yBall > canvas.height) {
+        ballOutOfPlay()
+      }
+    }
+    requestAnimationFrame(makeBall2);
+    collisionDetectionBall()
+  }
   function collisionDetectionBall() {
     //corners of paddle
     var yPaddleTop = yPaddle;
@@ -212,12 +268,39 @@ function audioStartScreenTheme() {
     //if statement to remove blocks
     if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
       //check if block exists before bounce happens
-      if (blocks[blockIndexAtBallPosition][0] === true) {
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'blue') {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed;
       }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'black') {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed = -yBallSpeed * yBallSpeedChangeMultiplier;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'gold') {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed = -yBallSpeed / yBallSpeedChangeMultiplier;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'green') {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        paddleWidth = paddleWidth +paddleWidthChange;
+        blocksLeft--;
+        yBallSpeed = -yBallSpeed;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'red') {
+        //remove block and bounce
+        paddleWidth = paddleWidth -paddleWidthChange;
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed = -yBallSpeed;
+      }
+
     }
   }
   function ballOutOfPlay() {
