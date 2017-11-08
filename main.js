@@ -16,6 +16,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var yBall= 200;
   var xBallSpeed = 0;
   var yBallSpeed = 4;
+  //ball2 variables
+  var ballRadius = 12;
+  var xBall2 = 400;
+  var yBall2= 200;
+  var xBallSpeed2 = 0;
+  var yBallSpeed2 = 4;
+  var ball2inPlay = false;
+  var ball2Animation= 'off'
   //paddle variables
   var difficulty = 0.25;
   var xPaddle = 300;
@@ -37,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //sound effects
   var startScreenTheme;
   var mainTheme;
-  //block blocktypes
+  //block blocktypes related variables
   var basicBlock = 'blue';
   var decreaseWidthBlock = 'red';
   var increaseWidthBlock = 'green';
@@ -216,32 +224,34 @@ function audioStartScreenTheme() {
     collisionDetectionBall()
   }
   function makeBall2() {
-    if (lives > 0 && blocksLeft > 0){
+    if (ball2Animation === 'on'){
+      ball2inPlay = true
       content.beginPath();
       //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
-      content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
-      content.fillStyle = 'green';
+      content.arc(xBall2, yBall2, ballRadius, 0, Math.PI * 2);
+      content.fillStyle = 'blue';
       content.fill();
       content.closePath()
       //making the ball move
-      xBall += xBallSpeed;
-      yBall += yBallSpeed
+      xBall2 += xBallSpeed2;
+      yBall2 += yBallSpeed2;
       //making the ball rebound at edges
       //and preventing its velocity from trapping it when it bounces off of paddle and wall at same time
-      if ((xBall> canvas.width && xBallSpeed > 0) || (xBall < 0 && xBallSpeed < 0)) {
-      xBallSpeed = -xBallSpeed;
+      if ((xBall2> canvas.width && xBallSpeed2 > 0) || (xBall2 < 0 && xBallSpeed2 < 0)) {
+      xBallSpeed2 = -xBallSpeed2;
       }
-      if (yBall <0) {
-      yBallSpeed = -yBallSpeed;
+      if (yBall2 <0) {
+      yBallSpeed2 = -yBallSpeed2;
       }
-      if (yBall > canvas.height) {
-        ballOutOfPlay()
+      if (yBall2 > canvas.height) {
+        ball2inPlay= false;
+        ball2Animation = 'off'
       }
     }
     requestAnimationFrame(makeBall2);
-    collisionDetectionBall()
+    collisionDetectionBall2()
   }
-  function collisionDetectionBall() {
+  function paddleCollision() {
     //corners of paddle
     var yPaddleTop = yPaddle;
     var yPaddleBottom = yPaddle - paddleHeight;
@@ -259,6 +269,27 @@ function audioStartScreenTheme() {
       //aiming function greater x velocity at edges
       xBallSpeed = xBallDistanceFromPaddleCenter * difficulty;
     }
+  }
+  function paddleCollisionBall2() {
+    //corners of paddle
+    var yPaddleTop = yPaddle;
+    var yPaddleBottom = yPaddle - paddleHeight;
+    var xPaddleLeft =  xPaddle;
+    var xPaddleRight = xPaddle + paddleWidth;
+
+    var xBallDistanceFromPaddleCenter = xBall2 - (xPaddle + paddleWidth/2)
+    //corners of paddle compared to ball coordinates to bounce ball off of paddle
+    if (yBall2 < yPaddleTop &&
+        yBall2 > yPaddleBottom &&
+        xBall2 > xPaddleLeft &&
+        xBall2 < xPaddleRight) {
+      //bounce ball
+      yBallSpeed2 = -yBallSpeed2;
+      //aiming function greater x velocity at edges
+      xBallSpeed2 = xBallDistanceFromPaddleCenter * difficulty;
+    }
+  }
+  function blockCollision() {
     //block bouncing code
     //x position of ball relative to block width in column
     var ballBlockColumn = Math.floor(xBall / blockWidth)
@@ -273,6 +304,14 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed;
+       if (ball2inPlay === false) {
+        ball2Animation ='on'
+        xBall2 = 400;
+        yBall2= 200;
+        xBallSpeed2 = 0;
+        yBallSpeed2 = 4;
+        makeBall2()
+       }
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'black') {
         //remove block and bounce
@@ -302,6 +341,59 @@ function audioStartScreenTheme() {
       }
 
     }
+  }
+  function blockCollisionBall2() {
+    //block bouncing code
+    //x position of ball relative to block width in column
+    var ballBlockColumn = Math.floor(xBall2 / blockWidth)
+    //y position of ball relative to block height
+    var ballBlockRow = Math.floor(yBall2 / blockHeight)
+    var blockIndexAtBallPosition = blockPositionIndex(ballBlockColumn, ballBlockRow)
+    //if statement to remove blocks
+    if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
+      //check if block exists before bounce happens
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'blue') {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed2 = -yBallSpeed2;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'black') {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed2 = -yBallSpeed2 * yBallSpeedChangeMultiplier;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'gold') {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed2 = -yBallSpeed2 / yBallSpeedChangeMultiplier;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'green') {
+        //remove block and bounce
+        blocks[blockIndexAtBallPosition][0] = false;
+        paddleWidth = paddleWidth +paddleWidthChange;
+        blocksLeft--;
+        yBallSpeed2 = -yBallSpeed2;
+      }
+      if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === 'red') {
+        //remove block and bounce
+        paddleWidth = paddleWidth -paddleWidthChange;
+        blocks[blockIndexAtBallPosition][0] = false;
+        blocksLeft--;
+        yBallSpeed2 = -yBallSpeed2;
+      }
+
+    }
+  }
+  function collisionDetectionBall() {
+    paddleCollision();
+    blockCollision();
+  }
+  function collisionDetectionBall2() {
+    paddleCollisionBall2();
+    blockCollisionBall2();
   }
   function ballOutOfPlay() {
     lives--;
@@ -392,4 +484,5 @@ function audioStartScreenTheme() {
     gameOverScreen();
     gameWon();
   }
+
 });
