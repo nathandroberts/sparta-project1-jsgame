@@ -36,7 +36,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var time;
   //sound effects
   var startScreenTheme;
-  var mainTheme
+  var mainTheme;
+  //block blocktypes
+  var basicBlock = 'blue';
+  var secondBlock = 'red';
+
   //start of the game
   LaunchGameScreen();
 
@@ -91,11 +95,11 @@ function audioStartScreenTheme() {
 // in collisionDetectionBall add if statements the different blocktypes
 //status effects fastball y, temp slowball y, small/big paddle, second ball?,explosion?, life drop, hazard drop?
 //---------------------------------------------//
-  function makeBlock(loopInputRow, loopInputColumn) {
+  function makeBlock(loopInputRow, loopInputColumn, blockTypeInput) {
     content.beginPath();
     // x coordinate, y coordinate, width, height
     content.rect((blockWidth * loopInputRow), (blockHeight * loopInputColumn), (blockWidth -blockPadding), (blockHeight - blockPadding));
-    content.fillStyle = 'red';
+    content.fillStyle = blockTypeInput;
     content.fill();
     content.closePath();
   }
@@ -103,15 +107,33 @@ function audioStartScreenTheme() {
     return column + numberOfBlockColumns * row;
   }
   function multipleBlocks() {
+    var blockType;
+
     //rows of blocks
     for (var j = 0; j <numberOfBlockRows; j++) {
       //columns of blocks
       for (var i = 0; i < numberOfBlockColumns; i++) {
-        //calculates array number of each block in blocks[] based on i and j
-        var blockPositionIndexValue = blockPositionIndex(i, j)
-        if (blocks[blockPositionIndexValue] === true) {
-          makeBlock(i, j);
+        blockType = randomNumberGenerator()
+        if (blockType === 1) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = basicBlock
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
 
+          }
+        } else if (blockType === 2) {
+          //calculates array number of each block in blocks[] based on i and j
+          var blockPositionIndexValue = blockPositionIndex(i, j)
+          if (blocks[blockPositionIndexValue][0] === true) {
+            if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
+              blocks[blockPositionIndexValue][1] = secondBlock
+            }
+            makeBlock(i, j, blocks[blockPositionIndexValue][1]);
+
+          }
         }
       }
     }
@@ -120,9 +142,12 @@ function audioStartScreenTheme() {
   //used to make blocks appear
   function allBlocksVisible() {
     for (var i = 0; i < numberOfBlockColumns*numberOfBlockRows; i++) {
-      blocks[i]= true;
+      blocks[i]= [true, 'typeNotSet']
       blocksLeft++;
     }
+  }
+  function randomNumberGenerator() {
+    return Math.floor(Math.random()* 2 + 1)
   }
   function movePaddle() {
     canvas.addEventListener('mousemove', function (event) {
@@ -187,9 +212,9 @@ function audioStartScreenTheme() {
     //if statement to remove blocks
     if (ballBlockColumn >=0 && ballBlockColumn <numberOfBlockColumns && ballBlockRow >=0 && ballBlockRow < numberOfBlockRows) {
       //check if block exists before bounce happens
-      if (blocks[blockIndexAtBallPosition] === true) {
+      if (blocks[blockIndexAtBallPosition][0] === true) {
         //remove block and bounce
-        blocks[blockIndexAtBallPosition] = false;
+        blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed;
       }
