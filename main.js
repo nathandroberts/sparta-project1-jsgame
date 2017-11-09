@@ -32,16 +32,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var ball3inPlay = false;
   var ball3Animation= 'off'
   //paddle variables
-  var difficulty = 0.2;
+  var difficulty = 0.18;
+  var difficultyBalanceModifier = 0.3;
   var xPaddle = 300;
   var yPaddle = 460;
   var paddleWidth = 200;
   var paddleHeight = 20;
   //block variables
-  var numberOfBlockRows = 4;
+  var numberOfBlockRows = 6;
   var numberOfBlockColumns = 9;
   var blockWidth = 90;
-  var blockHeight = 20;
+  var blockHeight = 15;
   var blockPadding = 3;
   var blocks = [];
   //win and loss conditions
@@ -57,13 +58,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var decreaseWidthBlock = 'DeepSkyBlue';
   var increaseWidthBlock = 'blue';
   var speedUpBlock = 'gold';
-  var speedDownBlock = 'GoldenRod'
+  var speedDownBlock = 'DarkGoldenRod'
   var basicBlock = 'lightgray'
   var doubleBlock = 'gray'
   var tripleBlock = 'black'
   var paddleWidthChange = 20;
-  var yBallSpeedChangeMultiplier = 1.5;
-  var blockTimesHit = 1
+  var yBallSpeedChangeMultiplier = 1.7;
   //start of the game
   LaunchGameScreen();
 
@@ -426,12 +426,14 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed * yBallSpeedChangeMultiplier;
+        difficulty= difficulty * difficultyBalanceModifier
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed / yBallSpeedChangeMultiplier;
+        difficulty= difficulty / difficultyBalanceModifier
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
@@ -478,29 +480,31 @@ function audioStartScreenTheme() {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
-        yBallSpeed = -yBallSpeed;
+        yBallSpeed2 = -yBallSpeed2;
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
         //change blocktype
         blocks[blockIndexAtBallPosition][1] = basicBlock;
-        yBallSpeed = -yBallSpeed;
+        yBallSpeed2 = -yBallSpeed2;
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
         //change blocktype
         blocks[blockIndexAtBallPosition][1] = doubleBlock;
-        yBallSpeed = -yBallSpeed;
+        yBallSpeed2 = -yBallSpeed2;
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2 * yBallSpeedChangeMultiplier;
+        difficulty= difficulty * difficultyBalanceModifier
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2 / yBallSpeedChangeMultiplier;
+        difficulty= difficulty / difficultyBalanceModifier
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
@@ -547,29 +551,31 @@ function audioStartScreenTheme() {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
-        yBallSpeed = -yBallSpeed;
+        yBallSpeed3 = -yBallSpeed3;
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
         //change blocktype
         blocks[blockIndexAtBallPosition][1] = basicBlock;
-        yBallSpeed = -yBallSpeed;
+        yBallSpeed3 = -yBallSpeed3;
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
         //change blocktype
         blocks[blockIndexAtBallPosition][1] = doubleBlock;
-        yBallSpeed = -yBallSpeed;
+        yBallSpeed3 = -yBallSpeed3;
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3 * yBallSpeedChangeMultiplier;
+        difficulty= difficulty * difficultyBalanceModifier
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3 / yBallSpeedChangeMultiplier;
+        difficulty= difficulty / difficultyBalanceModifier
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
