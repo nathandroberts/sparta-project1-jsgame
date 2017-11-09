@@ -676,6 +676,38 @@ function audioStartScreenTheme() {
     mainTheme.loop = true;
     mainTheme.play();
   }
+  function audioBlockGone() {
+    blockGone = new Audio("sound/blockGone.flac")
+    blockGone.play();
+  }
+  function audioExtraBallGone() {
+    extraBallGone = new Audio("sound/extraBallGone.wav")
+    extraBallGone.play();
+  }
+  function audioGrow() {
+    grow = new Audio("sound/grow.wav")
+    grow.play();
+  }
+  function audioImpact() {
+    impact = new Audio("sound/impact.wav")
+    impact.play();
+  }
+  function audioLifeDown() {
+    lifeDown = new Audio("sound/lifeDown.wav")
+    lifeDown.play();
+  }
+  function audioShrink() {
+    shrink = new Audio("sound/shrink.mp3")
+    shrink.play();
+  }
+  function audioSpeedDown() {
+    speedDown = new Audio("sound/speedDown.wav")
+    speedDown.play();
+  }
+  function audioSpeedUp() {
+    speedUp = new Audio("sound/speedUp.wav")
+    speedUp.play();
+  }
   //game functions
 
   function startGame() {
