@@ -90,11 +90,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
     doubleBlockIntro();
     doubleBlockText();
     tripleBlockIntro();
+    tripleBlockText();
     ballBlockIntro();
+    ballBlockText();
     speedDownBlockIntro();
+    speedDownBlockText();
     speedUpBlockIntro();
+    speedUpBlockText();
     increaseWidthBlockIntro();
+    increaseWidthBlockText();
     decreaseWidthBlockIntro();
+    decreaseWidthBlockText();
 
     canvas.addEventListener('click', function (event) {
       if (newGame === 'yes') {
@@ -148,8 +154,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
   function tripleBlockText() {
     content.font = "15px Arial";
-    content.fillStyle = doubleBlock;
-    content.fillText("Two hits", blockWidth + blockPadding + 14, 30);
+    content.fillStyle = tripleBlock;
+    content.fillText("Three hits", (blockWidth + blockPadding) * 2 + 14, 30);
   }
 
   function ballBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
@@ -159,6 +165,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     content.fillStyle = ballBlock;
     content.fill();
     content.closePath();
+  }
+  function ballBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = ballBlock;
+    content.fillText("Extra Ball", (blockWidth + blockPadding) * 3 + 14, 30);
   }
 
   function speedUpBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
@@ -170,6 +181,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     content.closePath();
   }
 
+  function speedUpBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = speedUpBlock;
+    content.fillText("Speed up", (blockWidth + blockPadding) * 4 + 14, 30);
+  }
+
   function speedDownBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
     content.beginPath();
     // x coordinate, y coordinate, width, height
@@ -177,6 +194,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     content.fillStyle = speedDownBlock;
     content.fill();
     content.closePath();
+  }
+
+  function speedDownBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = speedDownBlock;
+    content.fillText("Speed down", (blockWidth + blockPadding) * 5 + 4, 30);
   }
 
   function increaseWidthBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
@@ -188,6 +211,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     content.closePath();
   }
 
+  function increaseWidthBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = increaseWidthBlock;
+    content.fillText("Width up", (blockWidth + blockPadding) * 6 + 14, 30);
+  }
+
   function decreaseWidthBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
     content.beginPath();
     // x coordinate, y coordinate, width, height
@@ -195,6 +224,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     content.fillStyle = decreaseWidthBlock;
     content.fill();
     content.closePath();
+  }
+
+  function decreaseWidthBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = decreaseWidthBlock;
+    content.fillText("Width down", (blockWidth + blockPadding) * 7 + 4, 30);
   }
 
   function gameTitleText() {
