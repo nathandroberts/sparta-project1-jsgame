@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   //blockTypes and related variables
   var ballBlock = 'red';
   var decreaseWidthBlock = 'DeepSkyBlue';
-  var increaseWidthBlock = 'blue';
+  var increaseWidthBlock = 'darkviolet';
   var speedUpBlock = 'gold';
   var speedDownBlock = 'DarkGoldenRod'
   var basicBlock = 'lightgray'
@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     content.beginPath();
     // xcoordinate y width height
     content.rect(xPaddle, yPaddle, paddleWidth, paddleHeight);
-    content.fillStyle = 'blue';
+    content.fillStyle = 'darkviolet';
     content.fill();
     content.closePath();
   }
