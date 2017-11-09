@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
-  (function(){
+  // (function(){
     var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
-  })();
+  // })();
 
   var canvas = document.querySelector('canvas')
   console.log(canvas);
@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var content = canvas.getContext('2d');
   //for validation
   var newGame = 'yes';
+  var gameFinishedTrigger = 'off';
+  var gameFinished = false;
   //ball variables
   var ballRadius = 12;
   var xBall = 400;
@@ -72,15 +74,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
   function incrementTimeValue() {
     seconds++;
   }
-function audioStartScreenTheme() {
-  startScreenTheme = new Audio("sound/startScreenTheme.wav")
-  startScreenTheme.loop = true;
-  startScreenTheme.play();
-}
+
+  function audioStartScreenTheme() {
+    startScreenTheme = new Audio("sound/startScreenTheme.wav")
+    startScreenTheme.loop = true;
+    startScreenTheme.play();
+  }
+
   function LaunchGameScreen(){
     audioStartScreenTheme();
     gameTitleText();
     gameInfoText();
+    basicBlockIntro();
+    basicBlockText();
+    doubleBlockIntro();
+    doubleBlockText();
+    tripleBlockIntro();
+    ballBlockIntro();
+    speedDownBlockIntro();
+    speedUpBlockIntro();
+    increaseWidthBlockIntro();
+    decreaseWidthBlockIntro();
+
     canvas.addEventListener('click', function (event) {
       if (newGame === 'yes') {
         startScreenTheme.pause();
@@ -93,16 +108,107 @@ function audioStartScreenTheme() {
     })
   }
 
+  function basicBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((0), (0), (blockWidth), (blockHeight));
+    content.fillStyle = basicBlock;
+    content.fill();
+    content.closePath();
+  }
+
+  function basicBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = basicBlock;
+    content.fillText("One hit", 14, 30);
+  }
+
+  function doubleBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((blockWidth + blockPadding), (0), (blockWidth), (blockHeight));
+    content.fillStyle = doubleBlock;
+    content.fill();
+    content.closePath();
+  }
+
+  function doubleBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = doubleBlock;
+    content.fillText("Two hits", blockWidth + blockPadding + 14, 30);
+  }
+
+  function tripleBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((blockWidth+ blockPadding) * 2, (0), (blockWidth), (blockHeight));
+    content.fillStyle = tripleBlock;
+    content.fill();
+    content.closePath();
+  }
+  function tripleBlockText() {
+    content.font = "15px Arial";
+    content.fillStyle = doubleBlock;
+    content.fillText("Two hits", blockWidth + blockPadding + 14, 30);
+  }
+
+  function ballBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((blockWidth+ blockPadding) * 3, (0), (blockWidth), (blockHeight));
+    content.fillStyle = ballBlock;
+    content.fill();
+    content.closePath();
+  }
+
+  function speedUpBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((blockWidth+ blockPadding) * 4, (0), (blockWidth), (blockHeight));
+    content.fillStyle = speedUpBlock;
+    content.fill();
+    content.closePath();
+  }
+
+  function speedDownBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((blockWidth+ blockPadding) * 5, (0), (blockWidth), (blockHeight));
+    content.fillStyle = speedDownBlock;
+    content.fill();
+    content.closePath();
+  }
+
+  function increaseWidthBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((blockWidth+ blockPadding) * 6, (0), (blockWidth), (blockHeight));
+    content.fillStyle = increaseWidthBlock;
+    content.fill();
+    content.closePath();
+  }
+
+  function decreaseWidthBlockIntro(loopInputRow, loopInputColumn, blockTypeInput) {
+    content.beginPath();
+    // x coordinate, y coordinate, width, height
+    content.rect((blockWidth+ blockPadding) * 7, (0), (blockWidth), (blockHeight));
+    content.fillStyle = decreaseWidthBlock;
+    content.fill();
+    content.closePath();
+  }
+
   function gameTitleText() {
     content.font = "80px Arial";
     content.fillStyle = "blue";
     content.fillText("Block Breaker",150,170);
   }
+
   function gameInfoText() {
     content.font = "40px Arial";
     content.fillStyle = "green";
     content.fillText("Click to Start",280,240);
   }
+
   function makePaddle() {
     content.clearRect((0), (0), (canvas.width), (canvas.height))
     content.beginPath();
@@ -112,6 +218,7 @@ function audioStartScreenTheme() {
     content.fill();
     content.closePath();
   }
+
   function makeBlock(loopInputRow, loopInputColumn, blockTypeInput) {
     content.beginPath();
     // x coordinate, y coordinate, width, height
@@ -120,9 +227,11 @@ function audioStartScreenTheme() {
     content.fill();
     content.closePath();
   }
+
   function blockPositionIndex(column, row) {
     return column + numberOfBlockColumns * row;
   }
+
   function multipleBlocks() {
     var blockType;
 
@@ -209,6 +318,7 @@ function audioStartScreenTheme() {
     }
     requestAnimationFrame(multipleBlocks)
   }
+
   //used to make blocks appear
   function allBlocksVisible() {
     for (var i = 0; i < numberOfBlockColumns*numberOfBlockRows; i++) {
@@ -216,9 +326,11 @@ function audioStartScreenTheme() {
       blocksLeft++;
     }
   }
+
   function randomNumberGenerator() {
     return Math.floor(Math.random()* 100 + 1)
   }
+
   function movePaddle() {
     canvas.addEventListener('mousemove', function (event) {
       var xMouse = event.clientX;     // Get the horizontal coordinate
@@ -229,6 +341,7 @@ function audioStartScreenTheme() {
     })
     requestAnimationFrame(movePaddle)
   }
+
   function makeBall() {
     if (lives > 0 && blocksLeft > 0){
       content.beginPath();
@@ -249,12 +362,14 @@ function audioStartScreenTheme() {
       yBallSpeed = -yBallSpeed;
       }
       if (yBall > canvas.height) {
-        ballOutOfPlay()
+        ballOutOfPlay();
+        audioLifeDown();
       }
     }
     requestAnimationFrame(makeBall);
     collisionDetectionBall()
   }
+
   function makeBall2() {
     if (ball2Animation === 'on' && lives > 0 && blocksLeft > 0){
       ball2inPlay = true
@@ -278,11 +393,13 @@ function audioStartScreenTheme() {
       if (yBall2 > canvas.height) {
         ball2inPlay= false;
         ball2Animation = 'off'
+        audioExtraBallGone();
       }
     }
     requestAnimationFrame(makeBall2);
     collisionDetectionBall2()
   }
+
   function makeBall3() {
     if (ball3Animation === 'on' && lives > 0 && blocksLeft > 0){
       ball3inPlay = true
@@ -306,11 +423,13 @@ function audioStartScreenTheme() {
       if (yBall3 > canvas.height) {
         ball3inPlay= false;
         ball3Animation = 'off'
+        audioExtraBallGone();
       }
     }
     requestAnimationFrame(makeBall3);
     collisionDetectionBall3()
   }
+
   function paddleCollision() {
     //corners of paddle
     var yPaddleTop = yPaddle;
@@ -328,8 +447,10 @@ function audioStartScreenTheme() {
       yBallSpeed = -yBallSpeed;
       //aiming function greater x velocity at edges
       xBallSpeed = xBallDistanceFromPaddleCenter * difficulty;
+      audioImpact();
     }
   }
+
   function paddleCollisionBall2() {
     //corners of paddle
     var yPaddleTop = yPaddle;
@@ -347,8 +468,10 @@ function audioStartScreenTheme() {
       yBallSpeed2 = -yBallSpeed2;
       //aiming function greater x velocity at edges
       xBallSpeed2 = xBallDistanceFromPaddleCenter * difficulty;
+      audioImpact();
     }
   }
+
   function paddleCollisionBall3() {
     //corners of paddle
     var yPaddleTop = yPaddle;
@@ -366,8 +489,10 @@ function audioStartScreenTheme() {
       yBallSpeed3 = -yBallSpeed3;
       //aiming function greater x velocity at edges
       xBallSpeed3 = xBallDistanceFromPaddleCenter * difficulty;
+      audioImpact();
     }
   }
+
   function blockCollision() {
     //block bouncing code
     //x position of ball relative to block width in column
@@ -389,7 +514,8 @@ function audioStartScreenTheme() {
         yBall2= 200;
         xBallSpeed2 = 0;
         yBallSpeed2 = 4;
-        makeBall2()
+        makeBall2();
+        audioExtraBall();
        }
        if (ball3inPlay === false) {
         ball3Animation ='on'
@@ -397,7 +523,8 @@ function audioStartScreenTheme() {
         yBall3= 200;
         xBallSpeed3 = 0;
         yBallSpeed3 = 4;
-        makeBall3()
+        makeBall3();
+        audioExtraBall();
        }
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === basicBlock) {
@@ -405,30 +532,35 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
         //change blockType
         blocks[blockIndexAtBallPosition][1] = basicBlock;
         yBallSpeed = -yBallSpeed;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
         //change blockType
         blocks[blockIndexAtBallPosition][1] = doubleBlock;
         yBallSpeed = -yBallSpeed;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed * yBallSpeedUpMultiplier;
-        difficulty= difficulty * difficultyBalanceModifier
+        difficulty= difficulty * difficultyBalanceModifier;
+        audioSpeedUp();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed * yBallSpeedDownMultiplier;
-        difficulty= difficulty / difficultyBalanceModifier
+        difficulty= difficulty / difficultyBalanceModifier;
+        audioSpeedDown();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
@@ -436,6 +568,7 @@ function audioStartScreenTheme() {
         paddleWidth = paddleWidth +paddleWidthChange;
         blocksLeft--;
         yBallSpeed = -yBallSpeed;
+        audioGrow();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === decreaseWidthBlock) {
         //remove block and bounce
@@ -443,10 +576,12 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed = -yBallSpeed;
+        audioShrink();
       }
 
     }
   }
+
   function blockCollisionBall2() {
     //block bouncing code
     //x position of ball relative to block width in column
@@ -468,7 +603,8 @@ function audioStartScreenTheme() {
          yBall3= 200;
          xBallSpeed3 = 0;
          yBallSpeed3 = 4;
-         makeBall3()
+         makeBall3();
+         audioExtraBall();
         }
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === basicBlock) {
@@ -476,16 +612,19 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
         //change blockType
         blocks[blockIndexAtBallPosition][1] = basicBlock;
         yBallSpeed2 = -yBallSpeed2;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
         //change blockType
         blocks[blockIndexAtBallPosition][1] = doubleBlock;
         yBallSpeed2 = -yBallSpeed2;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
@@ -493,6 +632,7 @@ function audioStartScreenTheme() {
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2 * yBallSpeedUpMultiplier;
         difficulty= difficulty * difficultyBalanceModifier
+        audioSpeedUp();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
@@ -500,6 +640,7 @@ function audioStartScreenTheme() {
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2 * yBallSpeedDownMultiplier;
         difficulty= difficulty / difficultyBalanceModifier
+        audioSpeedDown();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
@@ -507,6 +648,7 @@ function audioStartScreenTheme() {
         paddleWidth = paddleWidth +paddleWidthChange;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2;
+        audioGrow();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === decreaseWidthBlock) {
         //remove block and bounce
@@ -514,10 +656,12 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed2 = -yBallSpeed2;
+        audioShrink();
       }
 
     }
   }
+
   function blockCollisionBall3() {
     //block bouncing code
     //x position of ball relative to block width in column
@@ -539,7 +683,8 @@ function audioStartScreenTheme() {
          yBall2= 200;
          xBallSpeed2 = 0;
          yBallSpeed2 = 4;
-         makeBall2()
+         makeBall2();
+         audioExtraBall();
         }
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === basicBlock) {
@@ -547,23 +692,27 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === doubleBlock) {
         //change blockType
         blocks[blockIndexAtBallPosition][1] = basicBlock;
         yBallSpeed3 = -yBallSpeed3;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === tripleBlock) {
         //change blockType
         blocks[blockIndexAtBallPosition][1] = doubleBlock;
         yBallSpeed3 = -yBallSpeed3;
+        audioBlockGone();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedUpBlock) {
         //remove block and bounce
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3 * yBallSpeedUpMultiplier;
-        difficulty= difficulty * difficultyBalanceModifier
+        difficulty= difficulty * difficultyBalanceModifier;
+        audioSpeedUp();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === speedDownBlock ) {
         //remove block and bounce
@@ -571,6 +720,7 @@ function audioStartScreenTheme() {
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3 * yBallSpeedDownMultiplier;
         difficulty= difficulty / difficultyBalanceModifier
+        audioSpeedDown();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === increaseWidthBlock) {
         //remove block and bounce
@@ -578,6 +728,7 @@ function audioStartScreenTheme() {
         paddleWidth = paddleWidth +paddleWidthChange;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3;
+        audioGrow();
       }
       if (blocks[blockIndexAtBallPosition][0] === true && blocks[blockIndexAtBallPosition][1] === decreaseWidthBlock) {
         //remove block and bounce
@@ -585,22 +736,27 @@ function audioStartScreenTheme() {
         blocks[blockIndexAtBallPosition][0] = false;
         blocksLeft--;
         yBallSpeed3 = -yBallSpeed3;
+        audioShrink();
       }
 
     }
   }
+
   function collisionDetectionBall() {
     paddleCollision();
     blockCollision();
   }
+
   function collisionDetectionBall2() {
     paddleCollisionBall2();
     blockCollisionBall2();
   }
+
   function collisionDetectionBall3() {
     paddleCollisionBall3();
     blockCollisionBall3();
   }
+
   function ballOutOfPlay() {
     lives--;
     xBall = 400;
@@ -608,22 +764,26 @@ function audioStartScreenTheme() {
     xBallSpeed = 0;
     yBallSpeed = 4;
   }
+
   function gameHud() {
     blocksLeftText();
     livesLeftText();
     timePassed();
     requestAnimationFrame(gameHud);
   }
+
   function blocksLeftText() {
     content.font = "30px Arial";
     content.fillStyle = "red";
     content.fillText("Blocks left : "+ blocksLeft,10,450);
   }
+
   function livesLeftText() {
     content.font = "30px Arial";
     content.fillStyle = "red";
     content.fillText("Lives : "+ lives,canvas.width- 130,450);
   }
+
   function timePassed() {
     if (lives>0 && blocksLeft>0) {
       time = seconds;
@@ -632,6 +792,7 @@ function audioStartScreenTheme() {
     content.fillStyle = "black";
     content.fillText("Time: "+ time, 10, 410);
   }
+
   //functions that are activated if game is lost
   function gameOverScreen(){
     if (lives === 0){
@@ -639,77 +800,122 @@ function audioStartScreenTheme() {
       gameDonePromptText();
       gameOverReset();
       mainTheme.pause();
+      if (gameFinishedTrigger === 'off') {
+        gameFinished = true;
+      }
+      if (gameFinished === true) {
+        audioGameoverTheme();
+        gameFinishedTrigger = 'done';
+        gameFinished = false;
+      }
     }
     requestAnimationFrame(gameOverScreen)
   }
+
   function gameOverText(){
     content.font = "100px Arial";
     content.fillStyle = "red";
     content.fillText("GAME OVER", 80, 250);
   }
+
   function gameDonePromptText() {
     content.font = "50px Arial";
     content.fillStyle = "black";
     content.fillText("Click to start a new game", 100, 350);
   }
+
   function gameOverReset() {
     canvas.addEventListener('click', function (event) {
       window.location.reload();
     })
   }
+
   //functions that are activated if the game is won
   function gameWon() {
     if (blocksLeft === 0){
-    gameWonText();
-    gameDonePromptText();
-    gameOverReset();
+      gameWonText();
+      gameDonePromptText();
+      gameOverReset();
+      if (gameFinishedTrigger === 'off') {
+        gameFinished = true;
+      }
+      if (gameFinished === true) {
+        audioGameWon();
+        gameFinishedTrigger = 'done';
+        gameFinished = false;
+      }
     }
     requestAnimationFrame(gameWon);
   }
+
   function gameWonText() {
     content.font = "100px Arial";
     content.fillStyle = "red";
     content.fillText("GAME WON", 80, 250);
   }
+
   function audioMainTheme() {
     mainTheme = new Audio("sound/mainTheme.mp3")
     mainTheme.loop = true;
     mainTheme.play();
   }
+
+  function audioGameoverTheme() {
+    gameoverTheme = new Audio("sound/gameoverTheme.wav")
+    gameoverTheme.play();
+  }
+
+  function audioGameWon() {
+    gameWonSound = new Audio("sound/gameWon.wav")
+    gameWonSound.play();
+    mainTheme.pause();
+  }
+
   function audioBlockGone() {
     blockGone = new Audio("sound/blockGone.flac")
     blockGone.play();
   }
+
+  function audioExtraBall() {
+    extraBall = new Audio("sound/extraBall.wav")
+    extraBall.play();
+  }
+
   function audioExtraBallGone() {
     extraBallGone = new Audio("sound/extraBallGone.wav")
     extraBallGone.play();
   }
+
   function audioGrow() {
     grow = new Audio("sound/grow.wav")
     grow.play();
   }
+
   function audioImpact() {
     impact = new Audio("sound/impact.wav")
     impact.play();
   }
+
   function audioLifeDown() {
     lifeDown = new Audio("sound/lifeDown.wav")
     lifeDown.play();
   }
+
   function audioShrink() {
     shrink = new Audio("sound/shrink.mp3")
     shrink.play();
   }
+
   function audioSpeedDown() {
     speedDown = new Audio("sound/speedDown.wav")
     speedDown.play();
   }
+
   function audioSpeedUp() {
     speedUp = new Audio("sound/speedUp.wav")
     speedUp.play();
   }
   //game functions
-
   function startGame() {
     audioMainTheme();
     gameHud();
@@ -722,5 +928,4 @@ function audioStartScreenTheme() {
     gameOverScreen();
     gameWon();
   }
-
 });
