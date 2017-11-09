@@ -178,7 +178,7 @@ function audioStartScreenTheme() {
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
           }
           //basicBlock spawn chance
-        } else if (blockType > 33 && blockType <= 50) {
+        } else if (blockType > 33 && blockType <= 65) {
           var blockPositionIndexValue = blockPositionIndex(i, j)
           if (blocks[blockPositionIndexValue][0] === true) {
             if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
@@ -187,7 +187,7 @@ function audioStartScreenTheme() {
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
           }
           //doubleBlock spawn chance
-        }  else if (blockType > 50 && blockType <= 80) {
+        }  else if (blockType > 65 && blockType <= 85) {
           var blockPositionIndexValue = blockPositionIndex(i, j)
           if (blocks[blockPositionIndexValue][0] === true) {
             if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
@@ -196,7 +196,7 @@ function audioStartScreenTheme() {
             makeBlock(i, j, blocks[blockPositionIndexValue][1]);
           }
           //tripleBlock spawn chance
-        } else if (blockType > 80 && blockType <= 100) {
+        } else if (blockType > 85 && blockType <= 100) {
           var blockPositionIndexValue = blockPositionIndex(i, j)
           if (blocks[blockPositionIndexValue][0] === true) {
             if (blocks[blockPositionIndexValue][1] === 'typeNotSet') {
@@ -234,7 +234,7 @@ function audioStartScreenTheme() {
       content.beginPath();
       //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
       content.arc(xBall, yBall, ballRadius, 0, Math.PI * 2);
-      content.fillStyle = 'green';
+      content.fillStyle = 'red';
       content.fill();
       content.closePath()
       //making the ball move
@@ -261,7 +261,7 @@ function audioStartScreenTheme() {
       content.beginPath();
       //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
       content.arc(xBall2, yBall2, ballRadius, 0, Math.PI * 2);
-      content.fillStyle = 'magenta';
+      content.fillStyle = 'yellow';
       content.fill();
       content.closePath()
       //making the ball move
@@ -289,7 +289,7 @@ function audioStartScreenTheme() {
       content.beginPath();
       //inputs (ball x coordinate, y coordinate,radius start angle of circle, endAngle)
       content.arc(xBall3, yBall3, ballRadius, 0, Math.PI * 2);
-      content.fillStyle = 'red';
+      content.fillStyle = 'lime';
       content.fill();
       content.closePath()
       //making the ball move
@@ -621,7 +621,7 @@ function audioStartScreenTheme() {
   }
   function livesLeftText() {
     content.font = "30px Arial";
-    content.fillStyle = "green";
+    content.fillStyle = "red";
     content.fillText("Lives : "+ lives,canvas.width- 130,450);
   }
   function timePassed() {
