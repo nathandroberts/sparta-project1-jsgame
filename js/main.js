@@ -85,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     audioStartScreenTheme();
     gameTitleText();
     gameInfoText();
+    controlsText();
     basicBlockIntro();
     basicBlockText();
     doubleBlockIntro();
@@ -242,6 +243,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     content.font = "40px Arial";
     content.fillStyle = "green";
     content.fillText("Click to Start",280,240);
+  }
+
+  function controlsText() {
+    content.font = "40px Arial";
+    content.fillStyle = "darkviolet";
+    content.fillText("Control paddle with mouse",150,480);
   }
 
   function makePaddle() {
@@ -552,7 +559,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         makeBall2();
         audioExtraBall();
        }
-       if (ball3inPlay === false) {
+       if (ball3inPlay === false && ball2inPlay === true ) {
         ball3Animation ='on'
         xBall3 = 400;
         yBall3= 200;
@@ -825,7 +832,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     content.font = "30px Arial";
     content.fillStyle = "black";
-    content.fillText("Time: "+ time, 10, 410);
+    content.fillText("Time: "+ time, 10, 415);
   }
 
   //functions that are activated if game is lost
