@@ -36,9 +36,9 @@ Learning to use code within the HTML canvas within a two day period.
 
     time:10                      o                    
     blocksLeft:39           ┏----------------┓        lives:3
-                            ┗----------------┛               |
+                            ┗----------------┛               
 
-nnnnn
+
 # Sparta Core Project 1 Brief
 
 Congratulation Spartans for making it through your first two weeks of training!
