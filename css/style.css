@@ -3,4 +3,6 @@
   border-width: medium;
   border-color: black;
   cursor: none;
+  background-image: url('../images/blockBreakerBackground.jpg');
+  background-size: 800px 500px;
 }

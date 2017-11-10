@@ -1,6 +1,45 @@
-# sparta-project1-jsgame
-A brick breaker game made with javascript css and html
-# Sparta Core Project 1
+# Block Breaker
+
+https://nathandroberts.github.io/sparta-project1-jsgame/
+
+A fast paced randomly generated block breaking game made using javascript css and html.
+
+The aim of the game is to use a mouse controlled paddle to destroy blocks by bouncing a ball into them. Win by destroying all blocks before your lives run out. Allowing the main ball to go out of play will decrease your lives until you reach game over.
+
+Control the direction and angle the ball bounces to by changing its point of contact with the paddle.
+
+Features implemented include different screens, background music, sound effects, a balanced ratio of different block types and spawning of up to two additional balls.
+
+## Most Pleased with
+The randomly generated blocks created at the start of the game helps to make each game feel different increasing replayability.
+
+Careful balance of difficulty modifiers and negative-positive block types help the game to feel fun and slightly challenging but still clearable with a little skill.
+
+## Challenges
+Learning to use code within the HTML canvas within a two day period.
+
+
+
+
+## Game screen
+
+|speed up|------|-----|thinner paddle|two hits|------------|
+|------------|
+|------|speed down|-----|-------|----|thicker paddle|
+|------|------|extra ball|-------|3 hits|------------||
+
+
+
+                 o
+
+                        o
+
+    time:10                      o                    
+    blocksLeft:39           ┏----------------┓        lives:3
+                            ┗----------------┛               
+
+
+# Sparta Core Project 1 Brief
 
 Congratulation Spartans for making it through your first two weeks of training!
 
@@ -97,14 +136,14 @@ We’ll also be looking at:
 ## Project Checklist
 | Task                                                                         | Complete? | Trainer Validated? |  
 |------------------------------------------------------------------------------|-----------|--------------------|
-| Instruction section                                                          |           |                    |  
-| Appropriate use of styling                                                   |           |                    |   
-| Game fully functional                                                        |           |                    |   
-| Implemented DRY Practices                                                    |           |                    |   
-| Proper HTML/JS/CSS Code Standards (Indentation, spacing, naming conventions) |           |                    |   
-| Good Quality Markdown                                                        |           |                    |   
-| Fully Git Tracked/Synced with Github                                         |           |                    |  
-| Fully prepared presentation.                                                 |           |                    |  
+| Instruction section                                                          |    Yes    |                    |  
+| Appropriate use of styling                                                   |    Yes    |                    |   
+| Game fully functional                                                        |    Yes    |                    |   
+| Implemented DRY Practices                                                    |    Yes    |                    |   
+| Proper HTML/JS/CSS Code Standards (Indentation, spacing, naming conventions) |    Yes    |                    |   
+| Good Quality Markdown                                                        |    Yes    |                    |   
+| Fully Git Tracked/Synced with Github                                         |    Yes    |                    |  
+| Fully prepared presentation.                                                 |      Yes     |                    |  
 
 
 
